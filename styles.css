@@ -1,0 +1,142 @@
+.nav-bar{
+    background-color: rgb(218, 130, 218);
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    margin: 0; /*to remove white space around*/ 
+}
+
+.nav-option{    
+    font-family: cursive;
+    color: aliceblue;
+    font-size: 1.4em;
+}
+
+#search-bar{
+    color: purple;
+}
+
+.task-manager{
+    display: flex;
+    margin: 3%;
+    justify-content: center;
+    height: 9vh;
+}
+
+#add-input{
+    display: flex;
+    width: 90%;
+    font-size: 30px;
+    font-family: cursive;
+}
+
+#add-button{
+    background-color: rgba(175, 22, 175, 0.842);
+    color: white;
+    width: 3em;
+    font-size: 2em;
+    font-family: cursive;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+#add-button:hover {
+    background-color: rgba(175, 22, 175, 0.507);
+    color: black;
+}
+
+#task-list{
+    display: block;
+    list-style: none;
+    font-family: cursive;
+    font-size: 30px;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.list-item{
+    background-color: rgba(140, 87, 226, 0.39);
+    margin: 1em;
+    padding: 0.3em;
+    border-radius: 0.5em;
+    border-color: black;
+    border-style: solid;
+    display: flex;
+    align-items: center;
+}
+
+.checked{
+    text-decoration: line-through;
+}
+
+.task-text{
+    overflow: hidden;
+    word-wrap:break-word;
+}
+
+.check-box{
+    width: 20px;
+    height: 20px;
+    margin-right: 1.2em;
+    cursor: pointer;
+}
+
+.delete-btn{
+    margin-left: auto; 
+    height:auto;
+    width: auto;
+    border-radius: 0.5em;
+    background-color: rgba(127, 79, 172, 0.699);
+    cursor: pointer;
+}
+
+.delete-btn:hover{
+    background-color: 
+    rgba(148, 104, 231, 0.767);
+}
+
+.delete-img{
+    width: 40px;
+    pointer-events: none;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form{
+    margin: 10em;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 2em;
+    width: 50%;
+    background-color: rgb(235, 222, 247);
+}
+
+.form-column{
+    font-family: cursive;
+    font-size: 1.5em;
+
+}
+
+.form-input{
+    height: 30px;
+    font-size: 1.4em;
+    font-family: cursive;
+}
+
+#submit-btn{
+    height: 40px;
+    width: 90px;
+    font-family: cursive;
+    font-size: 1.3em;
+    cursor: pointer;
+    background-color: rgb(210, 165, 247);
+}
+
+.form-link{
+    font-family: cursive;
+    font-size: 1.3em;
+}
