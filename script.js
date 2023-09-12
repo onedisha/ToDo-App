@@ -24,51 +24,22 @@ async function addTask(){
         console.log(JSON.stringify(data));
         addTaskFromData();
         addInput.value="";
+
+        let msg= await fetch('http://localhost:4000/data', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: task, 
+                checked: false,
+                taskID: tempID
+            })
+        });
+
+        let m= await msg.json();
+        console.log(m);
     }
-
-    // get request using queries
-    // let responseFromServer = await fetch('http://localhost:4000/add?num1=3&num2=4');
-    // console.log(responseFromServer);
-    // let parsed = await responseFromServer.json();
-    // console.log(parsed);
-
-    // post request with body in asyn await form
-    // try{
-    //     let responseFromServer = await fetch('http://localhost:4000/add',{
-    //         method:'POST',
-    //         headers:{
-    //             'Content-Type':'application/json'
-    //         },
-    //         body:JSON.stringify({
-    //             n1:34,
-    //             n2:45,
-    //             dishasbf:"udith"
-    //         })
-    //     });
-    //     console.log(responseFromServer);
-    //     let parsed = await responseFromServer.json();
-    //     console.log(parsed);
-    // }
-    // catch(err){
-    //     console.log(err);
-    // }
-
-    // in promise format
-    // fetch('http://localhost:4000/add',{
-    //     method:'POST',
-    //     headers:{
-    //         'Content-Type':'application/json'
-    //     },
-    //     body:JSON.stringify({
-    //         n1:34,
-    //         n2:45,
-    //         dishasbf:"udith"
-    //     })
-    // })
-    // .then(resfromserver=>resfromserver.json())
-    // .then(pars=>console.log(pars))
-    // .catch(err=>{console.log(err)});
-
 }
 
 addButton.addEventListener("click", addTask);
@@ -76,7 +47,7 @@ addInput.addEventListener("keydown", function(event){
     if(event.key === "Enter") addTask();
 })
 
-taskList.addEventListener("click", function (event) {
+taskList.addEventListener("click", async function (event) {
     if(event.target.classList.contains("check-box")){
         const checkbox = event.target;
         const taskText = checkbox.nextElementSibling;
@@ -101,6 +72,18 @@ taskList.addEventListener("click", function (event) {
         const listItem = deleteBtn.parentNode;
         taskList.removeChild(listItem);
         data= data.filter((e)=>e.taskID!=listItem.id);
+
+        const deletedata = await fetch('http://localhost:4000/deletedata', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(listItem.id)
+
+        });
+        let m= await deletedata.json();
+        console.log(m);
+
         addTaskFromData();
     }
 });
