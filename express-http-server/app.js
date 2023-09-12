@@ -37,15 +37,8 @@ app.get('/data', (req, res) => {
 })
 
 app.post('/data', (req, res) => {
-    const obj = req.body;
-    backendData.push(obj);
+    const obj = req.body.data;
+    backendData=obj;
     res.json("Data added successfully");
-    console.log(backendData);
-})
-
-app.post('/deletedata', (req, res) => {
-    const tempID= req.body;
-    backendData= backendData.filter((e) => e.taskId!=tempID);
-    res.json("Data updated successfully");
     console.log(backendData);
 })
