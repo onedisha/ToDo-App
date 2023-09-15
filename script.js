@@ -3,13 +3,11 @@ const addButton= document.querySelector("#add-button");
 const taskList= document.querySelector("#task-list");
 const searchBar= document.querySelector("#search-bar");
 let data = [];
-console.log = console.debug;
 
 function addTask(){
     const task= addInput.value.trim();
     if(task!=""){
         addToDb({title: task, checked: false});
-        getDb();
         addInput.value="";
     }
 }
@@ -24,8 +22,7 @@ taskList.addEventListener("click", function (event) {
         const checkbox = event.target;
         const taskText = checkbox.nextElementSibling;
         const listItem = checkbox.parentNode;
-        const changeTo= checkbox.checked;
-        editDb(listItem.id, changeTo);
+        const changeTo = checkbox.checked;
         if (checkbox.checked) {
             taskText.classList.add("checked");
             for (let i=0; i<data.length; i++){
@@ -39,7 +36,7 @@ taskList.addEventListener("click", function (event) {
             })
             k[0].checked=false; 
         }
-        getDb();
+        editDb(listItem.id, changeTo);
     }
 
     else if(event.target.classList.contains("delete-btn")){
@@ -47,7 +44,6 @@ taskList.addEventListener("click", function (event) {
         const listItem = deleteBtn.parentNode;
         data= data.filter((e)=>e.taskID!=listItem.id);
         deleteFromDb(listItem.id);
-        getDb();
     }
 });
 
@@ -76,36 +72,6 @@ function addTaskFromData(){
         listItems += listItem;    
     }
     taskList.innerHTML = listItems;
-
-   // saveToServer();
-   // saveToLocalStorage();
-}
-
-function saveToServer(){
-    fetch('http://localhost:4000/data', {
-        method: 'POST', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({data})
-    })
-    .then(res => res.json())
-    .then(data =>console.log(data))
-    .catch(err => alert("Data not saved, retry"))   
-}
-
-function saveToLocalStorage(){
-    localStorage.setItem("tasks",JSON.stringify(data));
-}
-
-function loadFromStorage(){
-   fetch('http://localhost:4000/data')
-   .then(res => res.json())
-   .then(d => {
-    data = d; 
-    addTaskFromData();
-   })
-   .catch(err => alert("unable to fetch data"))
 }
 
 function addToDb(obj){
@@ -118,8 +84,8 @@ function addToDb(obj){
         body: JSON.stringify(obj)
     })
     .then(res => res.json())
-    .then(res => data.push(res))
-    .catch(err => console.log("no data!"));
+    .then(res => getDb())
+    .catch(err => console.log("push unsuccessful"));
 }
 
 function deleteFromDb(tempid){
@@ -131,6 +97,7 @@ function deleteFromDb(tempid){
         body: JSON.stringify({id: tempid})
     })
     .then(res => res.json())
+    .then(res => getDb())
     .catch(err => console.log("no data to delete!"));
 }
 
@@ -143,6 +110,7 @@ function editDb(tempid, changeTo){
         body: JSON.stringify({id: tempid, checked: changeTo})
     })
     .then(res => res.json())
+    .then(res => getDb())
     .catch(err => console.log("no data to edit!"));
 }
 
@@ -157,4 +125,3 @@ function getDb(){
 }
 
 getDb();
-//loadFromStorage();
