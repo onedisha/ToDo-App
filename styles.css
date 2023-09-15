@@ -3,7 +3,7 @@
     display: flex;
     padding: 10px;
     justify-content: space-between;
-    margin: 0; /*to remove white space around*/ 
+    margin: 0;  
 }
 
 .nav-option{    

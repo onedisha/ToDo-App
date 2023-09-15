@@ -3,42 +3,14 @@ const addButton= document.querySelector("#add-button");
 const taskList= document.querySelector("#task-list");
 const searchBar= document.querySelector("#search-bar");
 let data = [];
+console.log = console.debug;
 
-let currID=data.length;
-
-function createID(){
-    currID++;
-    return currID;
-}
-
-// client - asks question
-async function addTask(){
+function addTask(){
     const task= addInput.value.trim();
     if(task!=""){
-        let tempID = createID();
-        data.push({
-            title: task, 
-            checked: false,
-            taskID: tempID
-        });
-        console.log(JSON.stringify(data));
-        addTaskFromData();
+        addToDb({title: task, checked: false});
+        getDb();
         addInput.value="";
-
-        let msg= await fetch('http://localhost:4000/data', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                title: task, 
-                checked: false,
-                taskID: tempID
-            })
-        });
-
-        let m= await msg.json();
-        console.log(m);
     }
 }
 
@@ -47,44 +19,35 @@ addInput.addEventListener("keydown", function(event){
     if(event.key === "Enter") addTask();
 })
 
-taskList.addEventListener("click", async function (event) {
+taskList.addEventListener("click", function (event) {
     if(event.target.classList.contains("check-box")){
         const checkbox = event.target;
         const taskText = checkbox.nextElementSibling;
         const listItem = checkbox.parentNode;
+        const changeTo= checkbox.checked;
+        editDb(listItem.id, changeTo);
         if (checkbox.checked) {
             taskText.classList.add("checked");
             for (let i=0; i<data.length; i++){
-                if(data[i]["taskID"]==listItem.id) data[i].checked=true;
+                if(data[i]["_id"]==listItem.id) data[i].checked=true;
             }
-        } else {
+        } 
+        else {
             taskText.classList.remove("checked");
             let k= data.filter((e)=>{
-                return (e.taskID == listItem.id)
+                return (e._id == listItem.id)
             })
             k[0].checked=false; 
         }
-        addTaskFromData();
+        getDb();
     }
 
     else if(event.target.classList.contains("delete-btn")){
         const deleteBtn = event.target;
         const listItem = deleteBtn.parentNode;
-        taskList.removeChild(listItem);
         data= data.filter((e)=>e.taskID!=listItem.id);
-
-        const deletedata = await fetch('http://localhost:4000/deletedata', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(listItem.id)
-
-        });
-        let m= await deletedata.json();
-        console.log(m);
-
-        addTaskFromData();
+        deleteFromDb(listItem.id);
+        getDb();
     }
 });
 
@@ -102,7 +65,7 @@ function addTaskFromData(){
     let listItems= "";
     for(let i=0; i<data.length; i++){        
         const listItem = `
-        <li class= "list-item" id="${data[i].taskID}">
+        <li class= "list-item" id="${data[i]._id}">
             <input type= "checkbox" class= "check-box" ${data[i].checked ? "checked" : ""}>
             <span class= "task-text  ${data[i].checked ? "checked" : ""}">${data[i].title}</span>
             <button  class="delete-btn">
@@ -113,18 +76,85 @@ function addTaskFromData(){
         listItems += listItem;    
     }
     taskList.innerHTML = listItems;
-    saveToLocalStorage();
+
+   // saveToServer();
+   // saveToLocalStorage();
 }
 
+function saveToServer(){
+    fetch('http://localhost:4000/data', {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data})
+    })
+    .then(res => res.json())
+    .then(data =>console.log(data))
+    .catch(err => alert("Data not saved, retry"))   
+}
 
 function saveToLocalStorage(){
     localStorage.setItem("tasks",JSON.stringify(data));
 }
 
 function loadFromStorage(){
-    let tasks= localStorage.getItem("tasks");
-    if(tasks!=null) data = JSON.parse(tasks);
+   fetch('http://localhost:4000/data')
+   .then(res => res.json())
+   .then(d => {
+    data = d; 
+    addTaskFromData();
+   })
+   .catch(err => alert("unable to fetch data"))
 }
 
-loadFromStorage();
-addTaskFromData();
+function addToDb(obj){
+    const d={};
+    fetch('http://localhost:4000/create',  {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(obj)
+    })
+    .then(res => res.json())
+    .then(res => data.push(res))
+    .catch(err => console.log("no data!"));
+}
+
+function deleteFromDb(tempid){
+    fetch('http://localhost:4000/delete',  {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: tempid})
+    })
+    .then(res => res.json())
+    .catch(err => console.log("no data to delete!"));
+}
+
+function editDb(tempid, changeTo){
+    fetch('http://localhost:4000/edit',  {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: tempid, checked: changeTo})
+    })
+    .then(res => res.json())
+    .catch(err => console.log("no data to edit!"));
+}
+
+function getDb(){
+    fetch('http://localhost:4000/all')
+    .then(res => res.json())
+    .then(d => {
+        data = d; 
+        addTaskFromData();
+       })
+    .catch(err => alert("unable to fetch data"))
+}
+
+getDb();
+//loadFromStorage();
