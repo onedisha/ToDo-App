@@ -23,17 +23,13 @@ taskList.addEventListener("click", function (event) {
         const taskText = checkbox.nextElementSibling;
         const listItem = checkbox.parentNode;
         const changeTo = checkbox.checked;
+        let k= data.filter((e) => e._id == listItem.id);
         if (checkbox.checked) {
             taskText.classList.add("checked");
-            for (let i=0; i<data.length; i++){
-                if(data[i]["_id"]==listItem.id) data[i].checked=true;
-            }
+            k[0].checked=true; 
         } 
         else {
             taskText.classList.remove("checked");
-            let k= data.filter((e)=>{
-                return (e._id == listItem.id)
-            })
             k[0].checked=false; 
         }
         editDb(listItem.id, changeTo);
@@ -42,18 +38,9 @@ taskList.addEventListener("click", function (event) {
     else if(event.target.classList.contains("delete-btn")){
         const deleteBtn = event.target;
         const listItem = deleteBtn.parentNode;
-        data= data.filter((e)=>e.taskID!=listItem.id);
+        data= data.filter((e) => e.taskID != listItem.id);
         deleteFromDb(listItem.id);
     }
-});
-
-searchBar.addEventListener("input", function(){
-    const searchText= searchBar.value.trim().toLowerCase();
-    Array.from(taskList.children).forEach((e)=>{
-        const taskText= e.querySelector(".task-text").textContent.toLowerCase();
-        if(taskText.includes(searchText)) e.style.display = "flex";
-        else e.style.display = "none";
-    });
 });
 
 function addTaskFromData(){
@@ -74,44 +61,50 @@ function addTaskFromData(){
     taskList.innerHTML = listItems;
 }
 
+searchBar.addEventListener("input", function(){
+    const searchText= searchBar.value.trim().toLowerCase();
+    Array.from(taskList.children).forEach((e)=>{
+        const taskText= e.querySelector(".task-text").textContent.toLowerCase();
+        if(taskText.includes(searchText)) e.style.display = "flex";
+        else e.style.display = "none";
+    });
+});
+
 function addToDb(obj){
     const d={};
-    fetch('http://localhost:4000/create',  {
+    fetch('http://localhost:4000/create', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(obj)
     })
-    .then(res => res.json())
     .then(res => getDb())
-    .catch(err => console.log("push unsuccessful"));
+    .catch(err => alert("Push unsuccessful!"));
 }
 
 function deleteFromDb(tempid){
-    fetch('http://localhost:4000/delete',  {
+    fetch('http://localhost:4000/delete', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({id: tempid})
     })
-    .then(res => res.json())
     .then(res => getDb())
-    .catch(err => console.log("no data to delete!"));
+    .catch(err => alert("No data to delete!"));
 }
 
 function editDb(tempid, changeTo){
-    fetch('http://localhost:4000/edit',  {
+    fetch('http://localhost:4000/edit', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({id: tempid, checked: changeTo})
     })
-    .then(res => res.json())
     .then(res => getDb())
-    .catch(err => console.log("no data to edit!"));
+    .catch(err => alert("No data to edit!"));
 }
 
 function getDb(){
