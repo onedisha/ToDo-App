@@ -1,9 +1,28 @@
+:root{
+    --bg-color: rgb(241, 225, 225);
+    --list-bg-color: rgba(140, 87, 226, 0.39);
+    --bin-color:  rgba(127, 79, 172, 0.699);
+    --nav-bar-color: rgba(105, 52, 129, 0.808);
+    --add-btn-color: rgba(175, 22, 175, 0.842);
+}
+
+body{
+    background-color: var(--bg-color);
+}
+
+body.dark-mode{
+    --bg-color: rgba(16, 4, 32, 0.897);
+    --list-bg-color: rgba(199, 146, 223, 0.87);
+    --bin-color:  rgba(98, 29, 209, 0.555);
+    --nav-bar-color: rgba(193, 128, 223, 0.808);
+    --add-btn-color: rgba(236, 87, 236, 0.842);
+}
+
 .nav-bar{
-    background-color: rgb(218, 130, 218);
+    background-color: var(--nav-bar-color);
     display: flex;
     padding: 10px;
     justify-content: space-between;
-    margin: 0;  
 }
 
 .nav-option{    
@@ -31,7 +50,7 @@
 }
 
 #add-button{
-    background-color: rgba(175, 22, 175, 0.842);
+    background-color: var(--add-btn-color);
     color: white;
     width: 3em;
     font-size: 2em;
@@ -55,7 +74,7 @@
 }
 
 .list-item{
-    background-color: rgba(140, 87, 226, 0.39);
+    background-color: var(--list-bg-color);
     margin: 1em;
     padding: 0.3em;
     border-radius: 0.5em;
@@ -86,7 +105,7 @@
     height:auto;
     width: auto;
     border-radius: 0.5em;
-    background-color: rgba(127, 79, 172, 0.699);
+    background-color: var(--bin-color);
     cursor: pointer;
 }
 
@@ -140,3 +159,16 @@
     font-family: cursive;
     font-size: 1.3em;
 }
+
+#mode-change{
+    font-family: cursive;
+    background-color: whitesmoke;
+    border-radius: 30%;
+    cursor: pointer;
+}
+
+#mode-img{
+    width: 2.3em;
+    padding-top: 0.3em;
+}
+

@@ -1,7 +1,9 @@
-const addInput= document.querySelector("#add-input");
-const addButton= document.querySelector("#add-button");
-const taskList= document.querySelector("#task-list");
-const searchBar= document.querySelector("#search-bar");
+const addInput = document.querySelector("#add-input");
+const addButton = document.querySelector("#add-button");
+const taskList = document.querySelector("#task-list");
+const searchBar = document.querySelector("#search-bar");
+const modeChange = document.querySelector("#mode-change");
+const body = document.body;
 let data = [];
 
 function addTask(){
@@ -23,22 +25,13 @@ taskList.addEventListener("click", function (event) {
         const taskText = checkbox.nextElementSibling;
         const listItem = checkbox.parentNode;
         const changeTo = checkbox.checked;
-        let k= data.filter((e) => e._id == listItem.id);
-        if (checkbox.checked) {
-            taskText.classList.add("checked");
-            k[0].checked=true; 
-        } 
-        else {
-            taskText.classList.remove("checked");
-            k[0].checked=false; 
-        }
+        taskText.classList.toggle("checked");
         editDb(listItem.id, changeTo);
     }
 
     else if(event.target.classList.contains("delete-btn")){
         const deleteBtn = event.target;
         const listItem = deleteBtn.parentNode;
-        data= data.filter((e) => e.taskID != listItem.id);
         deleteFromDb(listItem.id);
     }
 });
@@ -69,6 +62,20 @@ searchBar.addEventListener("input", function(){
         else e.style.display = "none";
     });
 });
+
+modeChange.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const img = document.querySelector("#mode-img");
+    console.log(img.src);
+    if(img.src=="http://127.0.0.1:5500/images/moon.png"){
+        img.src="images/sun.png";
+        img.title= "light-mode";
+    }
+    else{
+        img.src="images/moon.png";
+        img.title= "dark-mode";
+    } 
+})
 
 function addToDb(obj){
     const d={};
