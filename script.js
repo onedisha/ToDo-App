@@ -3,6 +3,7 @@ const addButton = document.querySelector("#add-button");
 const taskList = document.querySelector("#task-list");
 const searchBar = document.querySelector("#search-bar");
 const modeChange = document.querySelector("#mode-change");
+const logoutBtn = document.querySelector("#logout-btn");
 const body = document.body;
 let data = [];
 
@@ -66,8 +67,8 @@ searchBar.addEventListener("input", function(){
 modeChange.addEventListener("click", () => {
     body.classList.toggle("dark-mode");
     const img = document.querySelector("#mode-img");
-    console.log(img.src);
-    if(img.src=="http://127.0.0.1:5500/images/moon.png"){
+    if(img.title=="dark-mode"){
+        console.log(img.src);
         img.src="images/sun.png";
         img.title= "light-mode";
     }
@@ -121,7 +122,16 @@ function getDb(){
         data = d; 
         addTaskFromData();
        })
-    .catch(err => alert("unable to fetch data"))
+    .catch(err => alert("Unable to fetch data"))
 }
 
 getDb();
+
+function logout(){
+    fetch('http://localhost:4000/logout')
+    .then(res => res.json())
+    .then(d => console.log(d))
+    .catch(err => alert("Couldn't logout"));
+}
+
+logoutBtn.addEventListener("click", logout);
