@@ -128,7 +128,9 @@ function getDb(){
 getDb();
 
 function logout(){
-    fetch('http://localhost:4000/logout')
+    fetch('http://localhost:4000/logout', {
+        method: 'POST'
+    })
     .then(res => res.json())
     .then(d => console.log(d))
     .catch(err => alert("Couldn't logout"));

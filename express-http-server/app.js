@@ -17,6 +17,7 @@ app.use(cors());
 app.use(cookieparser());
 const port = 4000;
 
+//const uri = process.env.MONGO_URL;
 const uri = "mongodb://127.0.0.1:27017";
 const client = new MongoClient(uri);
 const database = client.db('ToDoApp');
@@ -28,18 +29,15 @@ app.listen(port, () => {
     console.log(`server is running on port ${port}`);
 });
 
-// app.get('/', verify, (req, res) => {
-//     res.send("This is a successful GET request");
-// });
-
-
 app.get('/all', verify, async (req, res) => {
     console.log(req.user);
-    const ret = await tododata.find({user: req.user.email}).toArray();
+    const ret = await tododata.find({email: req.user.email}).toArray();
     res.json(ret);
 })
 
 app.post('/create', verify, async (req, res) => {
+    const todo = req.body;
+    todo.email = req.user.email;
     const ret= await tododata.insertOne(req.body);
     res.json(ret);
 })
@@ -164,7 +162,8 @@ app.post('/login', async (req, res) => {
 app.post('/logout', async (req, res) => {
     const options = {
         expires: new Date(Date.now()),
-        httpOnly: true
+        httpOnly: true,
+        sameSite: true
     }; 
     res.cookie("token", "", options).json("logout successful");
 })
@@ -182,7 +181,6 @@ function verify(req, res, next){
         return;
     }
     const payload = jwt.verify(token, secretKey);
-    console.log(secretKey);
     if (payload){
         req.user= payload;
         next();
