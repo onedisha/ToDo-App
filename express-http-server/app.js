@@ -6,9 +6,9 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieparser = require('cookie-parser');
-const secretKey = process.env.JWT_SECRET;
 const path = require('path');
 require('dotenv').config();
+const secretKey = process.env.JWT_SECRET;
 
 // server config
 const app = express();
