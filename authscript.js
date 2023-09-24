@@ -81,16 +81,12 @@ alrAccountBtn.addEventListener("click",() => {
     forgotPwBtn.classList.toggle("hide");
 });
 
-function addUser(){
+function signup(){
     const firstname = firstName.value;
     const lastname = lastName.value;
     const email = eMail.value;
     const password = passWord.value;
-    register(firstname, lastname, email, password);
-}
-
-function register(firstname, lastname, email, password){
-    fetch('http://localhost:4000/register', {
+    fetch('http://localhost:4000/signup', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -99,14 +95,11 @@ function register(firstname, lastname, email, password){
     })
     .then(res => res.json())
     .then(d => {
-        //window.location.replace('/');
+        window.location.replace('/');
         console.log(d);
 ;    })
     .catch(err => alert(`unknown error: ${err}`)) 
 }
-
-signupBtn.addEventListener("click", addUser);
-
 
 function login(){
     const email = eMail.value;
@@ -120,10 +113,11 @@ function login(){
     })
     .then(res => res.json())
     .then(d => {
-        //window.location.replace('/');
+        window.location.replace('/');
         console.log(d);
     })
     .catch(err => console.error(`unknown error: ${err}`))
 }
 
+signupBtn.addEventListener("click", signup);
 loginBtn.addEventListener("click", login);

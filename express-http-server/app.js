@@ -6,9 +6,9 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieparser = require('cookie-parser');
-require('dotenv').config();
 const secretKey = process.env.JWT_SECRET;
 const path = require('path');
+require('dotenv').config();
 
 // server config
 const app = express();
@@ -17,8 +17,7 @@ app.use(cors());
 app.use(cookieparser());
 const port = 4000;
 
-//const uri = process.env.MONGO_URL;
-const uri = "mongodb://127.0.0.1:27017";
+const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri);
 const database = client.db('ToDoApp');
 const tododata = database.collection('ToDoData');
@@ -58,7 +57,7 @@ app.post('/edit', verify, async (req, res) => {
 })
 
 //AUTH
-app.post('/register', async (req, res) => {
+app.post('/signup', async (req, res) => {
     try {
         //get data from body
         const {firstname, lastname, email, password} = req.body;

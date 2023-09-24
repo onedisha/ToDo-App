@@ -7,6 +7,29 @@ const logoutBtn = document.querySelector("#logout-btn");
 const body = document.body;
 let data = [];
 
+modeChange.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+    const img = document.querySelector("#mode-img");
+    if(img.title=="dark-mode"){
+        console.log(img.src);
+        img.src="images/sun.png";
+        img.title= "light-mode";
+    }
+    else{
+        img.src="images/moon.png";
+        img.title= "dark-mode";
+    } 
+})
+
+searchBar.addEventListener("input", function(){
+    const searchText= searchBar.value.trim().toLowerCase();
+    Array.from(taskList.children).forEach((e)=>{
+        const taskText= e.querySelector(".task-text").textContent.toLowerCase();
+        if(taskText.includes(searchText)) e.style.display = "flex";
+        else e.style.display = "none";
+    });
+});
+
 function addTask(){
     const task= addInput.value.trim();
     if(task!=""){
@@ -55,29 +78,6 @@ function addTaskFromData(){
     taskList.innerHTML = listItems;
 }
 
-searchBar.addEventListener("input", function(){
-    const searchText= searchBar.value.trim().toLowerCase();
-    Array.from(taskList.children).forEach((e)=>{
-        const taskText= e.querySelector(".task-text").textContent.toLowerCase();
-        if(taskText.includes(searchText)) e.style.display = "flex";
-        else e.style.display = "none";
-    });
-});
-
-modeChange.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
-    const img = document.querySelector("#mode-img");
-    if(img.title=="dark-mode"){
-        console.log(img.src);
-        img.src="images/sun.png";
-        img.title= "light-mode";
-    }
-    else{
-        img.src="images/moon.png";
-        img.title= "dark-mode";
-    } 
-})
-
 function addToDb(obj){
     const d={};
     fetch('http://localhost:4000/create', {
@@ -125,8 +125,6 @@ function getDb(){
     .catch(err => alert("Unable to fetch data"))
 }
 
-getDb();
-
 function logout(){
     fetch('http://localhost:4000/logout', {
         method: 'POST'
@@ -137,3 +135,4 @@ function logout(){
 }
 
 logoutBtn.addEventListener("click", logout);
+getDb();
