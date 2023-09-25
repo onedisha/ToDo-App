@@ -1,6 +1,5 @@
 // imports
 const express = require('express');
-const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const { ObjectId } = require('mongodb');
 const bcrypt = require('bcryptjs');
@@ -13,9 +12,8 @@ const secretKey = process.env.JWT_SECRET;
 // server config
 const app = express();
 app.use(express.json());
-app.use(cors());
 app.use(cookieparser());
-const port = 4000;
+const port = process.env.PORT;
 
 const uri = process.env.MONGO_URL;
 const client = new MongoClient(uri);
@@ -190,7 +188,7 @@ function verify(req, res, next){
     }
 }
 
-app.use('/', verify, express.static(path.join(__dirname, './../')));
+app.use('/', verify, express.static(path.join(__dirname, './src')));
 
 //signing process: secret + payload = token
 //verify process: token + secret = payload

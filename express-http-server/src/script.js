@@ -80,7 +80,7 @@ function addTaskFromData(){
 
 function addToDb(obj){
     const d={};
-    fetch('http://localhost:4000/create', {
+    fetch('/create', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ function addToDb(obj){
 }
 
 function deleteFromDb(tempid){
-    fetch('http://localhost:4000/delete', {
+    fetch('/delete', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ function deleteFromDb(tempid){
 }
 
 function editDb(tempid, changeTo){
-    fetch('http://localhost:4000/edit', {
+    fetch('/edit', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ function editDb(tempid, changeTo){
 }
 
 function getDb(){
-    fetch('http://localhost:4000/all')
+    fetch('/all')
     .then(res => res.json())
     .then(d => {
         data = d; 
@@ -126,7 +126,7 @@ function getDb(){
 }
 
 function logout(){
-    fetch('http://localhost:4000/logout', {
+    fetch('/logout', {
         method: 'POST'
     })
     .then(res => res.json())

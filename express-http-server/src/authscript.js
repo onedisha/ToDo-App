@@ -86,7 +86,7 @@ function signup(){
     const lastname = lastName.value;
     const email = eMail.value;
     const password = passWord.value;
-    fetch('http://localhost:4000/signup', {
+    fetch('/signup', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -104,7 +104,7 @@ function signup(){
 function login(){
     const email = eMail.value;
     const password = passWord.value;
-    fetch('http://localhost:4000/login', {
+    fetch('/login', {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'

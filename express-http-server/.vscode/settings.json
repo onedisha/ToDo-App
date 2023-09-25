@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/8c39ee3e-7813-47c4-9ad7-0483a24d2514/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/lemontodo",
+    "appService.deploySubpath": "."
+}
